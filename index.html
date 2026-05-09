@@ -272,7 +272,7 @@
       <span class="divider-line"></span>
     </div>
 
-    <p class="date-text">Summer 2025 &nbsp;·&nbsp; A Day to Remember</p>
+    <p class="date-text">Summer 2026 &nbsp;·&nbsp; A Day to Remember</p>
 
     <img
       class="venue-photo"
@@ -288,28 +288,33 @@
     <div class="modal-box">
       <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
       <p class="modal-label">Surprise! 🎉</p>
-      <div class="video-wrap">
-        <iframe
-          src="https://www.youtube.com/embed/xvFZjo5PgG0?si=JklaamWeaWpfIvTk&autoplay=1&mute=0"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-        ></iframe>
-      </div>
+      <div class="video-wrap" id="videoWrap"></div>
       <p class="lol-text">lol heres the actual link</p>
     </div>
   </div>
 
   <script>
     /* ── Modal ───────────────────────────────────────────── */
-    function openModal()  { document.getElementById('modal').classList.add('active'); }
+    function openModal() {
+      document.getElementById('modal').classList.add('active');
+      // Inject iframe synchronously inside the click handler so the browser
+      // treats this as a direct user gesture — granting unmuted autoplay.
+      const wrap = document.getElementById('videoWrap');
+      if (!wrap.querySelector('iframe')) {
+        const iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube.com/embed/xvFZjo5PgG0?si=JklaamWeaWpfIvTk&autoplay=1&mute=0';
+        iframe.title = 'YouTube video player';
+        iframe.frameBorder = '0';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        iframe.allowFullscreen = true;
+        wrap.appendChild(iframe);
+      }
+    }
     function closeModal() {
       document.getElementById('modal').classList.remove('active');
-      // stop video by reloading the iframe src
-      const iframe = document.querySelector('.video-wrap iframe');
-      iframe.src = iframe.src;
+      // Nuke the iframe entirely to stop playback
+      document.getElementById('videoWrap').innerHTML = '';
     }
     document.getElementById('modal').addEventListener('click', function(e) {
       if (e.target === this) closeModal();
