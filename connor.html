@@ -18,6 +18,12 @@
             background: #fff;
             padding: 20px;
             border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .caption {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.2rem;
         }
     </style>
 </head>
@@ -27,18 +33,20 @@
     <p>Check out this cool video below:</p>
 
     <div class="video-container">
-        <!-- Replace the URL below with your video's embed link -->
+        <!-- Added autoplay=1. Note: Browser may block autoplay if sound is on. -->
         <iframe 
-    width="560" 
-    height="315" 
-    src="https://www.youtube.com/embed/4Ini99W5YiU?autoplay=1&mute=1&start=56" 
-    title="YouTube video player" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    referrerpolicy="strict-origin-when-cross-origin" 
-    allowfullscreen>
-</iframe>
+            width="560" 
+            height="315" 
+            src="https://www.youtube.com/embed/xvFZjo5PgG0?autoplay=1" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+        </iframe>
     </div>
+
+    <p class="caption">lol jk here's the actual link:</p>
 
 </body>
 </html>
