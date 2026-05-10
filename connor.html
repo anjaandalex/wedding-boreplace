@@ -441,7 +441,7 @@
         </div>
       </div>
 
-      <p class="lol-text">
+      <p class="lol-text" id="lolText" style="visibility:hidden;">
         lol jk here's the actual link:
         <a href="https://anjaandalex.github.io/wedding-website/">wedding website</a>
       </p>
@@ -490,9 +490,8 @@
     }
 
     function revealVideo() {
-      // Hide the cover, then immediately call play — this is still inside
-      // the user's tap/click gesture so browsers allow sound
       document.getElementById('videoCover').classList.add('hidden');
+      document.getElementById('lolText').style.visibility = 'visible';
       if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
         ytPlayer.playVideo();
       }
@@ -511,6 +510,7 @@
       var el = document.getElementById('ytPlayerEl');
       if (el) el.remove();
       document.getElementById('videoCover').classList.remove('hidden');
+      document.getElementById('lolText').style.visibility = 'hidden';
     }
 
     document.getElementById('modal').addEventListener('click', function(e) {
