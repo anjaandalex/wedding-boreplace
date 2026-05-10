@@ -449,34 +449,67 @@
   </div>
 
   <script>
+    /* ── YouTube IFrame Player API ───────────────────────── */
+    var ytPlayer = null;
+    var ytReady  = false;
+
+    // Load the API script once
+    var tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+
+    // Called automatically by the API when it's ready
+    function onYouTubeIframeAPIReady() {
+      ytReady = true;
+    }
+
+    function createPlayer() {
+      // Create a plain div for the API to replace
+      var div = document.createElement('div');
+      div.id = 'ytPlayerEl';
+      var wrap = document.getElementById('videoWrap');
+      wrap.insertBefore(div, document.getElementById('videoCover'));
+
+      ytPlayer = new YT.Player('ytPlayerEl', {
+        videoId: 'xvFZjo5PgG0',
+        playerVars: {
+          autoplay: 0,       // we call play manually
+          controls: 1,
+          rel: 0,
+          modestbranding: 1,
+        },
+        width: '100%',
+        height: '100%',
+      });
+    }
+
     /* ── Modal ───────────────────────────────────────────── */
     function openModal() {
       document.getElementById('modal').classList.add('active');
-      // Pre-load iframe hidden behind the cover — no thumbnail visible yet
-      const wrap = document.getElementById('videoWrap');
-      if (!wrap.querySelector('iframe')) {
-        const iframe = document.createElement('iframe');
-        // autoplay=1 so it starts the moment the cover is dismissed
-        iframe.src = 'https://www.youtube.com/embed/xvFZjo5PgG0?autoplay=1&mute=0&controls=0&modestbranding=1&rel=0';
-        iframe.title = 'YouTube video player';
-        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-        iframe.allowFullscreen = true;
-        // Insert BEFORE the cover so cover sits on top
-        wrap.insertBefore(iframe, document.getElementById('videoCover'));
-      }
+      if (!ytPlayer) createPlayer();
     }
 
     function revealVideo() {
-      // Fade out the cover to reveal the already-playing video underneath
+      // Hide the cover, then immediately call play — this is still inside
+      // the user's tap/click gesture so browsers allow sound
       document.getElementById('videoCover').classList.add('hidden');
+      if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+        ytPlayer.playVideo();
+      }
     }
 
     function closeModal() {
       document.getElementById('modal').classList.remove('active');
-      // Reset: remove iframe and un-hide cover for next open
-      const wrap = document.getElementById('videoWrap');
-      const iframe = wrap.querySelector('iframe');
-      if (iframe) iframe.remove();
+      if (ytPlayer && typeof ytPlayer.stopVideo === 'function') {
+        ytPlayer.stopVideo();
+      }
+      // Destroy player and reset cover so it works cleanly if reopened
+      if (ytPlayer && typeof ytPlayer.destroy === 'function') {
+        ytPlayer.destroy();
+      }
+      ytPlayer = null;
+      var el = document.getElementById('ytPlayerEl');
+      if (el) el.remove();
       document.getElementById('videoCover').classList.remove('hidden');
     }
 
