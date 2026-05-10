@@ -428,7 +428,7 @@
   <div class="modal-overlay" id="modal">
     <div class="modal-box">
       <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
-      <p class="modal-label">Surprise! 🎉</p>
+      <p class="modal-label" id="modalLabel" style="visibility:hidden;">Surprise! 🎉</p>
       <div class="video-wrap" id="videoWrap">
         <!-- Fake thumbnail — hides the real YouTube preview until clicked -->
         <div class="video-cover" id="videoCover" onclick="revealVideo()">
@@ -492,6 +492,7 @@
     function revealVideo() {
       document.getElementById('videoCover').classList.add('hidden');
       document.getElementById('lolText').style.visibility = 'visible';
+      document.getElementById('modalLabel').style.visibility = 'visible';
       if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
         ytPlayer.playVideo();
       }
@@ -511,6 +512,7 @@
       if (el) el.remove();
       document.getElementById('videoCover').classList.remove('hidden');
       document.getElementById('lolText').style.visibility = 'hidden';
+      document.getElementById('modalLabel').style.visibility = 'hidden';
     }
 
     document.getElementById('modal').addEventListener('click', function(e) {
